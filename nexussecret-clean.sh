@@ -1,0 +1,1 @@
+kubectl delete -f nexus-secret/nexus-secret.yml -n apps

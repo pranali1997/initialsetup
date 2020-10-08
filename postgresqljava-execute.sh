@@ -1,0 +1,1 @@
+helm install postgres bitnami/postgresql --values postgresqljava/values.yaml -n infra

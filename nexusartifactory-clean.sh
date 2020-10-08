@@ -1,0 +1,1 @@
+helm delete nexus-artifactory -n nexus

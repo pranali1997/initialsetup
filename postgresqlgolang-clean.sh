@@ -1,0 +1,1 @@
+helm delete postgresgolang -n apps

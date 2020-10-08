@@ -1,0 +1,7 @@
+{
+  "auths": {
+    "registry.demo/repository/service-starter-docker": {
+      "auth": "YWRtaW46VGhvdWdodEBjYXRhbHlzdA=="
+    }
+  }
+}

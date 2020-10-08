@@ -1,0 +1,5 @@
+ingress:
+  enabled: true
+  hostRepo: nexus.catalyst.com
+persistence:
+  storageSize: 20Gi

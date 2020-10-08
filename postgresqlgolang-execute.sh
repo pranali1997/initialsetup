@@ -1,0 +1,1 @@
+helm install postgresgolang postgresqlgolang -n infra

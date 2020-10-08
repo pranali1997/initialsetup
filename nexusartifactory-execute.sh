@@ -1,0 +1,1 @@
+helm install nexus-artifactory sonatype/nexus-repository-manager --values nexus-artifactory/values.yaml -n nexus
