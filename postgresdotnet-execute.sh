@@ -1,0 +1,1 @@
+helm install postgresqldotnet postgresqldotnet -n infra

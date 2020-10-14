@@ -1,0 +1,1 @@
+helm delete postgresqldotnet -n infra
