@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  initdbgolang.sh: |
+    export PGPASSWORD='password123'
+    psql -c "create user payment_user_go superuser password 'password123';" -U postgres -h postgresql -p 5432
+    psql -c "create database payment_db_go owner=payment_user_go" -U postgres -h postgresql -p 5432
+    psql -c 'create extension if not exists "pgcrypto";' -U payment_user_go -d payment_db_go -h postgresql -p 5432
+    psql -c "create table if not exists bank_info (\
+        id uuid primary key default gen_random_uuid(),\
+        url varchar(100) not null,\
+        bank_code  varchar(100) not null,\
+        createdAt timestamp without time zone default (now() at time zone 'utc'),\
+        updatedAt timestamp without time zone default (now() at time zone 'utc'),\
+        CHECK (url <> ''),\
+        CHECK (bank_code <> '')\
+    );"  -U payment_user_go -d payment_db_go -h postgresql -p 5432
+    psql -c "create table if not exists payments (\
+        id serial primary key,\
+
+        amount numeric(10, 4) not null,\
+
+        beneficiary_name varchar(100) not null,\
+        beneficiary_account_number integer not null,\
+        beneficiary_ifsc_code varchar(100) not null,\
+
+        payee_name varchar(100) not null,\
+        payee_account_number integer not null,\
+        payee_ifsc_code varchar(100) not null,\
+
+        status varchar(100) not null,\
+
+        createdAt timestamp without time zone default (now() at time zone 'utc'),\
+        updatedAt timestamp without time zone default (now() at time zone 'utc')\
+    );" -U payment_user_go -d payment_db_go -h postgresql -p 5432
+    psql -c "ALTER TABLE bank_info ADD CONSTRAINT unique_url UNIQUE (url);" -U payment_user_go -d payment_db_go -h postgresql -p 5432
+    psql -c "ALTER TABLE bank_info ADD CONSTRAINT unique_bank_code UNIQUE (bank_code);" -U payment_user_go -d payment_db_go -h postgresql -p 5432
+
+  initdbjava.sh: |
+    export PGPASSWORD='password123'
+    psql -c "create user payment_user_java superuser password 'password123';" -U postgres -h postgresql -p 5432
+    psql -c "create database payment_db_java owner=payment_user_java" -U postgres -h postgresql -p 5432
+
+  initdbdotnet.sh: |
+    export PGPASSWORD='password123'
+    psql -c "create user payment_user_dotnet superuser password 'password123';" -U postgres -h postgresql -p 5432
+    psql -c "create database payment_db_dotnet owner=payment_user_dotnet" -U postgres -h postgresql -p 5432
+
+
